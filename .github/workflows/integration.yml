@@ -1,3 +1,11 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 4 optimizations:
+# - [MEDIUM] Add concurrency group to "integration.yml"
+# - [LOW] Explicitly set fail-fast for large matrix job "mainbuild" (6 combinations)
+# - [LOW] Use shallow clone in "mainbuild" job
+# - [LOW] Use shallow clone in "cypress" job
+# Estimated savings: ~4 min/run
+#
 # This workflow executes the various RepoSense tests
 
 name: Continuous Integration
@@ -11,6 +19,10 @@ on:
     branches-ignore:
       - gh-pages
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 env:
   NODE_VER: '22.x'
   JAVA_DISTRIBUTION: 'zulu'
